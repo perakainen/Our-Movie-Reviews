@@ -1,24 +1,16 @@
 import React, {useEffect, useState} from 'react'
-import { Text, TextInput, View, StyleSheet } from 'react-native'
+import { Text, TextInput, View, StyleSheet, Button } from 'react-native'
+import ListOfMovies from './ListOfMovies'
 
 function QueryForMovie(){
 
-    const [movieList, setMovieList] = useState({
-        Search: [],
-        totalResults: "",
-        Response: ""
-    })
-    
     const [search, setSearch] = useState("")
-    
-    useEffect(() => console.log(movieList), [movieList])
-    useEffect(() => console.log(search), [search])
 
     return (
         <View style={styles.centerView}>
             <Text >Search for a movie</Text> 
             <TextInput style={styles.input} onChangeText={search => setSearch(search)} value={search} textAlign={'center'} placeholder="Example 'Spiderman'"/>
-
+            <ListOfMovies search={search}/>
         </View>)
 }
 
