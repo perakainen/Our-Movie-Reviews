@@ -8,28 +8,52 @@ function ListOfMovies(props){
         totalResults: "",
         Response: ""
     })
-
-    const [searchString, setSearchString] = useState("")
     
+    //Dev use
     useEffect(() => console.log(movieList), [movieList])
     useEffect(() => console.log(props.search), [props.search])
 
-    const searchMovies = (qstring) =>{
-        let querryString = `https://www.omdbapi.com/?s=${qstring}&page=9&apikey=89e86f3e`
+    const searchMovies = (querry) => {
+
+        //Only for demo, as api-key is visible
+        let querryString = `https://www.omdbapi.com/?s=${querry}&apikey=89e86f3e`
         fetch(querryString)
         .then(res => res.json())
         .then(data => setMovieList(data))
+        //Dev use
+        .then(console.log(querryString))
         .catch(e => console.log(e))
     }
 
-    const handleSearchString = () =>{
+    const handleSearchString = (qstring) => {
 
+        //Create array for user-input
+        let uncutArray = qstring.split(" ")
+        let urlStringUnready = ""
+        let querry = ""
+
+        //Trim array for url
+        for (const phrase of uncutArray) {
+
+            urlStringUnready += phrase + "+"
+
+            //Dev use
+            console.log("Loop: " + urlStringUnready)
+        }
+
+        //Cut last '+ -sign'
+        querry = urlStringUnready.slice(0, urlStringUnready.length -1)
+
+        //Dev use
+        console.log(querry)
+
+        searchMovies(querry)
     }
 
 
 
     return (<View>
-                <TouchableHighlight onPress={handleSearchString}>
+                <TouchableHighlight onPress={() => handleSearchString(props.search)}>
                     <View style={styles.button}>
                         <Text style={styles.buttonText}>Go</Text>
                     </View>
