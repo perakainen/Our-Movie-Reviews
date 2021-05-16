@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react'
-import { Text, TextInput, View, StyleSheet, FlatList, TouchableHighlight } from 'react-native'
+import React, {Fragment, useEffect, useState} from 'react'
+import { Text, View, StyleSheet, FlatList, TouchableHighlight, } from 'react-native'
+
 
 function ListOfMovies(props){
 
@@ -11,7 +12,7 @@ function ListOfMovies(props){
     
     //Dev use
     useEffect(() => console.log(movieList), [movieList])
-    useEffect(() => console.log(props.search), [props.search])
+    useEffect(() => console.log("Search querry: " + props.search), [props.search])
 
     const searchMovies = (querry) => {
 
@@ -21,59 +22,133 @@ function ListOfMovies(props){
         .then(res => res.json())
         .then(data => setMovieList(data))
         //Dev use
-        .then(console.log(querryString))
-        .catch(e => console.log(e))
+        .then(console.log("Searched with querry " + querryString))
+        .catch(e => console.log("Error while fetching: " + e))
     }
 
     const handleSearchString = (qstring) => {
 
-        //Create array for user-input
-        let uncutArray = qstring.split(" ")
-        let urlStringUnready = ""
-        let querry = ""
+        if(qstring.length != 0){
 
-        //Trim array for url
-        for (const phrase of uncutArray) {
+            //Create array for user-input
+            let uncutArray = qstring.split(" ")
+            let urlStringUnready = ""
+            let querry = ""
 
-            urlStringUnready += phrase + "+"
+            // array for url
+            for (const phrase of uncutArray) {
+
+                urlStringUnready += phrase + "+"
+
+                //Dev use
+                console.log("Loop: " + urlStringUnready)
+            }
+
+            //Cut last '+ -sign'
+            querry = urlStringUnready.slice(0, urlStringUnready.length -1)
 
             //Dev use
-            console.log("Loop: " + urlStringUnready)
+            console.log(querry)
+
+            searchMovies(querry)
         }
 
-        //Cut last '+ -sign'
-        querry = urlStringUnready.slice(0, urlStringUnready.length -1)
-
-        //Dev use
-        console.log(querry)
-
-        searchMovies(querry)
+        else {
+            setMovieList({
+                        Search: [],
+                        totalResults: "",
+                        Response: ""
+                        })
+        }
+        
     }
 
+    const RenderFlatList = () => {
 
+        if(movieList.Response === 'True'){
 
-    return (<View>
+            return (<View style= {styles.itemWrapper}>
+
+                        <View>
+                            <FlatList 
+
+                            persistentScrollbar={true}
+                            data={movieList.Search}
+                            keyExtractor={(item, index) => index.toString()}
+
+                            renderItem={({ item }) => (
+                                <View>
+                                    <Text style={styles.item}>
+                                        {item.Title}
+                                    </Text>
+                                </View>
+                            )}
+                            />
+                        </View>
+
+                        <View style={styles.total}>
+                            <Text>Total results: {movieList.totalResults}</Text>
+                        </View>
+
+                    </View>)
+        }
+        
+        else {
+            return (<Text>Start by Searching!</Text>)
+        }
+        
+    }
+
+    return (<View style={styles.view}>
+
                 <TouchableHighlight onPress={() => handleSearchString(props.search)}>
                     <View style={styles.button}>
                         <Text style={styles.buttonText}>Go</Text>
                     </View>
                 </TouchableHighlight>
+
+                <View >
+                    <RenderFlatList/>
+                </View>
+                
             </View>)
 }
 
 const styles = StyleSheet.create({
+
+    total: {
+        backgroundColor: 'grey',
+        color: 'red',
+        paddingHorizontal: 140,
+        paddingVertical: 5,
+        alignContent: 'center',
+    },
+    itemWrapper: {
+        backgroundColor: '#FFB806',
+        width: 'auto',
+        height: 250
+    },
+    item: {
+        padding: 20,
+        color: 'black',
+        borderWidth: 1,
+    },
+    view: {
+        alignItems: 'center',
+    },
     button: {
         marginBottom: 30,
         width: 100,
         margin: 8,
         alignItems: 'center',
-        backgroundColor: '#2196F3'
-      },
-      buttonText: {
+        backgroundColor: '#4E3100'
+    },
+    buttonText: {
         textAlign: 'center',
         padding: 20,
-        color: 'white'
-      }
+        color: 'yellow'
+    },
+    
   });
 
 

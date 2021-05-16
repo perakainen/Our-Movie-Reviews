@@ -8,8 +8,7 @@ function MainView(){
         <View>
             <QueryForMovie/>
         </View>
-    )
-    
+    )   
 }
 
 export default MainView

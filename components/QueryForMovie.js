@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useState} from 'react'
 import { Text, TextInput, View, StyleSheet, Button } from 'react-native'
 import ListOfMovies from './ListOfMovies'
 
@@ -8,21 +8,37 @@ function QueryForMovie(){
 
     return (
         <View style={styles.centerView}>
-            <Text >Search for a movie</Text> 
-            <TextInput style={styles.input} onChangeText={search => setSearch(search)} value={search} textAlign={'center'} placeholder="Example 'Spiderman'"/>
-            <ListOfMovies search={search}/>
+
+            <Text style = {styles.searchTxt}>Search for a movie</Text>
+
+            <TextInput 
+              style={styles.input} 
+              onChangeText={search => setSearch(search)} 
+              value={search} 
+              textAlign={'center'} 
+              placeholder="Example 'Spiderman'"
+            />
+
+            <ListOfMovies 
+              search={search}
+            />
+
         </View>)
 }
 
 const styles = StyleSheet.create({
+    searchTxt: {
+      padding: 15,
+    },
     input: {
       height: 40,
       width: 250,
       borderWidth: 1,
-      alignItems: 'center'
+      alignItems: 'center',
+      backgroundColor: '#D0E1D4'
     },
     centerView: {
-        alignItems: 'center'
+        alignItems: 'center',
     }
   });
 
