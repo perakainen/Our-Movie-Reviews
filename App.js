@@ -1,21 +1,24 @@
-import React from 'react'
-import { StyleSheet, View } from 'react-native';
-import MainView from './components/views/MainView'
+import * as React from 'react'
+import Navigation from './navigation/navigation'
+// import DetailMovieView from './components/views/DetailMovieView'
+// import { NavigationContainer } from '@react-navigation/native'
+// import { createStackNavigator } from '@react-navigation/stack'
+
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <MainView/>
-    </View>
-  );
+  return(
+        <Navigation/>
+        );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 40,
-    backgroundColor: '#9D2F11',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
+  //const { Navigator, Screen} = createStackNavigator()
+
+/* <NavigationContainer>
+        <Navigator headerMode = 'none'>
+            <Screen name='mainView' component={MainView} />
+            <Screen name='detailMovieView' component={DetailMovieView} />
+        </Navigator>
+    </NavigationContainer> */
+
+    
