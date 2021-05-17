@@ -1,8 +1,10 @@
-import React, { useState} from 'react'
+import React, { useState, useEffect} from 'react'
 import { Text, TextInput, View, StyleSheet, Button } from 'react-native'
 import ListOfMovies from './ListOfMovies'
 
-function QueryForMovie(){
+function QueryForMovie(props){
+
+    //useEffect(() => console.log(props), [])
 
     const [search, setSearch] = useState("")
 
@@ -21,6 +23,7 @@ function QueryForMovie(){
 
             <ListOfMovies 
               search={search}
+              props={props.props}
             />
 
         </View>)

@@ -1,8 +1,10 @@
-import React, {Fragment, useEffect, useState} from 'react'
+import React, { useEffect, useState} from 'react'
 import { Text, View, StyleSheet, FlatList, TouchableHighlight, } from 'react-native'
 
 
 function ListOfMovies(props){
+
+    const {navigation} = props.props
 
     const [movieList, setMovieList] = useState({
         Search: [],
@@ -11,8 +13,9 @@ function ListOfMovies(props){
     })
     
     //Dev use
-    useEffect(() => console.log(movieList), [movieList])
-    useEffect(() => console.log("Search querry: " + props.search), [props.search])
+    //useEffect(() => console.log(props.props.navigation), [])
+    //useEffect(() => console.log(movieList), [movieList])
+    //useEffect(() => console.log("Search querry: " + props.search), [props.search])
 
     const searchMovies = (querry) => {
 
@@ -22,7 +25,7 @@ function ListOfMovies(props){
         .then(res => res.json())
         .then(data => setMovieList(data))
         //Dev use
-        .then(console.log("Searched with querry " + querryString))
+        //.then(console.log("Searched with querry " + querryString))
         .catch(e => console.log("Error while fetching: " + e))
     }
 
@@ -35,7 +38,7 @@ function ListOfMovies(props){
             let urlStringUnready = ""
             let querry = ""
 
-            // array for url
+            // concat url array to string
             for (const phrase of uncutArray) {
 
                 urlStringUnready += phrase + "+"
@@ -48,7 +51,7 @@ function ListOfMovies(props){
             querry = urlStringUnready.slice(0, urlStringUnready.length -1)
 
             //Dev use
-            console.log(querry)
+            //console.log(querry)
 
             searchMovies(querry)
         }
@@ -67,6 +70,7 @@ function ListOfMovies(props){
 
         if(movieList.Response === 'True'){
 
+            // Tee touchableHighLight Loppuun
             return (<View style= {styles.itemWrapper}>
 
                         <View>
@@ -77,12 +81,19 @@ function ListOfMovies(props){
                             keyExtractor={(item, index) => index.toString()}
 
                             renderItem={({ item }) => (
-                                <View>
-                                    <Text style={styles.item}>
-                                        {item.Title}
-                                    </Text>
-                                </View>
+
+                                <TouchableHighlight onPress={() => navigation.navigate('DetailMovieView', {item}) }>
+
+                                    <View>
+                                        <Text style={styles.item}>
+                                            {item.Title}
+                                        </Text>
+                                    </View>
+
+                                </TouchableHighlight>
+
                             )}
+
                             />
                         </View>
 
