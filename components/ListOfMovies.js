@@ -4,6 +4,7 @@ import { Text, View, StyleSheet, FlatList, TouchableHighlight, } from 'react-nat
 
 function ListOfMovies(props){
 
+    //Deconstruct nested props
     const {navigation} = props.props
 
     const [movieList, setMovieList] = useState({
@@ -12,11 +13,6 @@ function ListOfMovies(props){
         Response: ""
     })
     
-    //Dev use
-    //useEffect(() => console.log(props.props.navigation), [])
-    //useEffect(() => console.log(movieList), [movieList])
-    //useEffect(() => console.log("Search querry: " + props.search), [props.search])
-
     const searchMovies = (querry) => {
 
         //Only for demo, as api-key is visible
@@ -24,9 +20,7 @@ function ListOfMovies(props){
         fetch(querryString)
         .then(res => res.json())
         .then(data => setMovieList(data))
-        //Dev use
-        //.then(console.log("Searched with querry " + querryString))
-        .catch(e => console.log("Error while fetching: " + e))
+        .catch(e => console.log(`Error while fetching: ${e}`))
     }
 
     const handleSearchString = (qstring) => {
@@ -44,7 +38,7 @@ function ListOfMovies(props){
                 urlStringUnready += phrase + "+"
 
                 //Dev use
-                console.log("Loop: " + urlStringUnready)
+                //console.log("Loop: " + urlStringUnready)
             }
 
             //Cut last '+ -sign'
@@ -72,10 +66,8 @@ function ListOfMovies(props){
 
             // Tee touchableHighLight Loppuun
             return (<View style= {styles.itemWrapper}>
-
                         <View>
                             <FlatList 
-
                             persistentScrollbar={true}
                             data={movieList.Search}
                             keyExtractor={(item, index) => index.toString()}
@@ -92,8 +84,7 @@ function ListOfMovies(props){
 
                                 </TouchableHighlight>
 
-                            )}
-
+                                )}
                             />
                         </View>
 

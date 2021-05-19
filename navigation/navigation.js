@@ -9,9 +9,21 @@ const {Navigator, Screen} = createStackNavigator()
 
 const MainViewScreen = () => (
     <Navigator>
-        <Screen name='MainView' component={MainView}/>
-        <Screen name='DetailMovieView' component={DetailMovieView}/>
-        <Screen name='ListOfMovies' component={ListOfMovies}/>
+        <Screen name='MainView' 
+        component={MainView}
+        options={{
+            headerShown: false
+        }}
+        />
+        <Screen 
+        name='DetailMovieView' 
+        component={DetailMovieView}
+        options={({route}) => ({title: route.params.item.Title})}
+        />
+        <Screen 
+        name='ListOfMovies' 
+        component={ListOfMovies}
+        />
     </Navigator>
 )
 
