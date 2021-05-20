@@ -4,15 +4,14 @@ import QueryForMovie from '../components/QueryForMovie'
 
 function MainView(props){
 
-  console.log(props)
-
+    navigation = props.navigation
     return(
         <View style={styles.container}>
             <View>
               <QueryForMovie props={props}/>
             </View>
         
-              <TouchableHighlight onPress={() => props.navigation.navigate('MyReviews',  {props}) }>
+              <TouchableHighlight onPress={() => props.navigation.navigate('MyReviews') }>
                 <View style={styles.button}>
                   <Text style={styles.buttonText}>
                     My Reviews

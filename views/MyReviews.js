@@ -1,21 +1,29 @@
 import React, { useEffect, useState} from 'react'
 import { Text, View, StyleSheet, Image, ScrollView, TextInput, TouchableHighlight, FlatList } from 'react-native'
 import * as firebase from 'firebase'
-import { render } from 'react-dom'
+import * as Haptics from 'expo-haptics';
 
 function MyReview({navigation}){
 
     const [myReviews, setMyReviews] = useState([])
 
     const currentRev = () => {
-        
-            firebase.database().ref('reviews/').on('value', snapshot => {
-                
+            firebase.database().ref('reviews/').once('value', snapshot => {
+                if(snapshot.exists()){
                 const data = snapshot.val()
                 const review = Object.values(data)
-                console.log(review)
                 setMyReviews(review)
+                }
+                else{
+                    setMyReviews([])
+                }
             })
+    }
+
+    
+    const removeItem = (id) => {
+        firebase.database().ref('reviews/' + id).remove()
+        currentRev()
     }
 
     const RenderFlatList = () => {
@@ -29,10 +37,11 @@ function MyReview({navigation}){
                             persistentScrollbar={true}
                             data={myReviews}
                             keyExtractor={(item, index) => index.toString()}
+                            extraData={myReviews}
     
                             renderItem={({ item }) => (
     
-                                <TouchableHighlight onPress={() => navigation.navigate('DetailMovieView', {item}) }>
+                                <TouchableHighlight onPress={() => navigation.navigate('DetailMovieView', {item})} onLongPress={() => {removeItem(item.imdbID); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)}}>
     
                                     <View>
                                         <Text style={styles.item}>
@@ -61,12 +70,27 @@ function MyReview({navigation}){
 
     useEffect(() => currentRev(), [])
 
-    return(<View style={styles.container}><RenderFlatList/></View>)
+    return(
+            <View style={styles.container}>
+                <View>
+                    <Text style={styles.header}>
+                        My Reviews
+                    </Text>
+                    <Text>
+                        Tap to open, press long to delete
+                    </Text>
+                </View>
+                <RenderFlatList/>
+            </View>)
 
 }
 
 const styles = StyleSheet.create({
 
+    header: {
+        fontSize: 45,
+        paddingBottom: 60,
+    },
     container: {
         flex:1,
         paddingTop: 40,
@@ -83,6 +107,7 @@ const styles = StyleSheet.create({
     itemWrapper: {
         backgroundColor: '#FFB806',
         alignContent: 'center',
+        height: 200,
     },
     item: {
         padding: 20,

@@ -28,6 +28,7 @@ const MainViewScreen = () => (
         <Screen 
         name='MyReviews' 
         component={MyReviews}
+        options={{title: 'My Reviews'}}
         />
     </Navigator>
 )

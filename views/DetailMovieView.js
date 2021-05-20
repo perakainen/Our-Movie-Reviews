@@ -1,6 +1,7 @@
 import React, { useEffect, useState} from 'react'
 import { Text, View, StyleSheet, Image, ScrollView, TextInput, TouchableHighlight } from 'react-native'
 import * as firebase from 'firebase'
+import * as Haptics from 'expo-haptics'
 
 function DetailMovieView(props){
 
@@ -49,19 +50,19 @@ function DetailMovieView(props){
     }
 
     const currentRev = () => {
-        firebase.database().ref('reviews/' + item.imdbID).on('value', snapshot => {
+        firebase.database().ref('reviews/' + item.imdbID).once('value', snapshot => {
+            if(snapshot.exists()){
             const data = snapshot.val()
             const review = Object.values(data)
             setReviewText(review[review.length-1])
+            }
         })
     }
     
     const saveItem = () => {
-
             firebase.database().ref('reviews/' + movieDetail.imdbID).set(
                 {'Title': movieDetail.Title, 'review': reviewText, 'rating': reviewRating, 'imdbID' : movieDetail.imdbID }
             )
-        
     }
 
     useEffect(() => searchByIdMovies(item.imdbID), [])
