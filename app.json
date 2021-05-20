@@ -27,6 +27,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "Course final task",
+    "githubUrl": "https://github.com/perakainen/ourmovierevs"
   }
 }
