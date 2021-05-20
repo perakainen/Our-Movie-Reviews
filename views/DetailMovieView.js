@@ -1,11 +1,14 @@
 import React, { useEffect, useState} from 'react'
-import { Text, View, StyleSheet, Image, ScrollView } from 'react-native'
-import AppLoading from 'expo-app-loading'
+import { Text, View, StyleSheet, Image, ScrollView, TextInput, TouchableHighlight } from 'react-native'
+import * as firebase from 'firebase'
 
 function DetailMovieView(props){
 
     //Deconstruct item from props
     const {item} = props.route.params
+
+    const [reviewRating, setReviewRating] = useState('')
+    const [reviewText, setReviewText] = useState('')
 
     const [movieDetail, setMovieDetail] = useState({
         Title: '',
@@ -35,7 +38,7 @@ function DetailMovieView(props){
         Metascore: '',
     })
 
-    const searchMovies = (querry) => {
+    const searchByIdMovies = (querry) => {
         
         //Only for demo, as api-key is visible
         let querryString = `https://www.omdbapi.com/?i=${querry}&apikey=89e86f3e`
@@ -45,9 +48,27 @@ function DetailMovieView(props){
         .catch(e => console.log(`Error while fetching: ${e}`))
     }
 
-    useEffect(() => searchMovies(item.imdbID), [])
+    const currentRev = () => {
+        firebase.database().ref('reviews/' + item.imdbID).on('value', snapshot => {
+            const data = snapshot.val()
+            const review = Object.values(data)
+            setReviewText(review[review.length-1])
+        })
+    }
+    
+    const saveItem = () => {
+
+            firebase.database().ref('reviews/' + movieDetail.imdbID).set(
+                {'Title': movieDetail.Title, 'review': reviewText, 'rating': reviewRating, 'imdbID' : movieDetail.imdbID }
+            )
+        
+    }
+
+    useEffect(() => searchByIdMovies(item.imdbID), [])
+    useEffect(() => currentRev(), [])
     //Dev log
-    useEffect(() => console.log(movieDetail), [movieDetail])
+    // useEffect(() => console.log(movieDetail), [movieDetail])
+    // useEffect(() => console.log(reviewText), [reviewText])
     
     return(
             <ScrollView style={styles.container}>
@@ -123,9 +144,30 @@ function DetailMovieView(props){
                         Poster:
                     </Text>
                 </View>
+
                     <View>
                         <Image style={styles.logo} source={{uri: movieDetail.Poster ? movieDetail.Poster : null}} />
                     </View>
+
+                    <View style={styles.centerView}>
+                        <Text style={styles.innerTitle}>
+                            Write a review
+                        </Text>
+                        <TextInput
+                            style={styles.input}
+                            multiline={true}
+                            value={reviewText}
+                            onChangeText={reviewText => setReviewText(reviewText)}
+                        />
+
+                    </View>
+
+                    <View style= {styles.view}>
+                        <TouchableHighlight style={styles.button} onPress={saveItem}>
+                            <Text> Save Review</Text>
+                        </TouchableHighlight>
+                    </View>
+                        
                 
             </ScrollView>
             )
@@ -133,13 +175,24 @@ function DetailMovieView(props){
 
 const styles = StyleSheet.create({
 
+    innerTitle:{
+        padding: 8,
+    },
+    input: {
+        width:250,
+        height:100,
+        borderWidth: 1,
+        backgroundColor: '#D0E1D4',
+        padding: 15,
+    },
     centerView: {
         alignItems: 'center',
+        padding: 20,
     },
     logo: {
         flex: 1,
         resizeMode: 'contain',
-        aspectRatio: 0.845
+        aspectRatio: 0.845,
     },
     container: {
         flex:1,
@@ -149,11 +202,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     button: {
-        marginBottom: 30,
-        width: 100,
+        paddingTop: 30,
+        paddingBottom:40,
+        width: 250,
+        height: 25,
         margin: 8,
         alignItems: 'center',
-        backgroundColor: '#4E3100'
+        backgroundColor: '#BE3E82'
     },
     buttonText: {
         textAlign: 'center',

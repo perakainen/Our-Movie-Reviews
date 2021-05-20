@@ -1,5 +1,5 @@
-import React, { useState, useEffect} from 'react'
-import { Text, TextInput, View, StyleSheet, Button } from 'react-native'
+import React, { useState } from 'react'
+import { Text, TextInput, View, StyleSheet } from 'react-native'
 import ListOfMovies from './ListOfMovies'
 
 function QueryForMovie(props){

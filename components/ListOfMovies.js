@@ -1,6 +1,5 @@
-import React, { useEffect, useState} from 'react'
+import React, { useState} from 'react'
 import { Text, View, StyleSheet, FlatList, TouchableHighlight, } from 'react-native'
-
 
 function ListOfMovies(props){
 
@@ -13,7 +12,7 @@ function ListOfMovies(props){
         Response: ""
     })
     
-    const searchMovies = (querry) => {
+    const searchByQuerryMovies = (querry) => {
 
         //Only for demo, as api-key is visible
         let querryString = `https://www.omdbapi.com/?s=${querry}&apikey=89e86f3e`
@@ -47,7 +46,7 @@ function ListOfMovies(props){
             //Dev use
             //console.log(querry)
 
-            searchMovies(querry)
+            searchByQuerryMovies(querry)
         }
 
         else {
@@ -64,7 +63,6 @@ function ListOfMovies(props){
 
         if(movieList.Response === 'True'){
 
-            // Tee touchableHighLight Loppuun
             return (<View style= {styles.itemWrapper}>
                         <View>
                             <FlatList 
@@ -123,17 +121,18 @@ const styles = StyleSheet.create({
         color: 'red',
         paddingHorizontal: 140,
         paddingVertical: 5,
-        alignContent: 'center',
     },
     itemWrapper: {
         backgroundColor: '#FFB806',
         width: 'auto',
-        height: 250
+        height: 250,
+        alignContent: 'center',
     },
     item: {
         padding: 20,
         color: 'black',
         borderWidth: 1,
+        textAlign: 'center',
     },
     view: {
         alignItems: 'center',
