@@ -1,12 +1,16 @@
 import React from 'react'
-import { View, StyleSheet, FlatList, TouchableHighlight, Text, } from 'react-native'
+import { View, StyleSheet, TouchableHighlight, Text, } from 'react-native'
 import QueryForMovie from '../components/QueryForMovie'
 
 function MainView(props){
 
-    navigation = props.navigation
     return(
         <View style={styles.container}>
+          <View>
+            <Text style={styles.title}>
+                OUR MOVIE REVIEWS
+            </Text>
+          </View>
             <View>
               <QueryForMovie props={props}/>
             </View>
@@ -23,6 +27,10 @@ function MainView(props){
 }
 
 const styles = StyleSheet.create({
+    title:{
+      fontSize: 35,
+      color: 'yellow',
+    },
     container: {
       flex: 1,
       paddingTop: 40,

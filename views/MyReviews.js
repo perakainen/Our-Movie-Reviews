@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from 'react'
 import { Text, View, StyleSheet, Image, ScrollView, TextInput, TouchableHighlight, FlatList } from 'react-native'
 import * as firebase from 'firebase'
-import * as Haptics from 'expo-haptics';
+import * as Haptics from 'expo-haptics'
 
 function MyReview({navigation}){
 
@@ -76,7 +76,7 @@ function MyReview({navigation}){
                     <Text style={styles.header}>
                         My Reviews
                     </Text>
-                    <Text>
+                    <Text style={styles.instructs}>
                         Tap to open, press long to delete
                     </Text>
                 </View>
@@ -87,15 +87,21 @@ function MyReview({navigation}){
 
 const styles = StyleSheet.create({
 
+    instructs:{
+        textAlign: 'center',
+        paddingBottom: 10,
+    },
     header: {
-        fontSize: 45,
+        fontSize: 35,
         paddingBottom: 60,
+        color: 'yellow',
     },
     container: {
         flex:1,
         paddingTop: 40,
         backgroundColor: '#9D2F11',
         alignItems: 'center',
+        textAlign:'center',
         justifyContent: 'center',
     },
     total: {
